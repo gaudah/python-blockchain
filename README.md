@@ -1,4 +1,4 @@
-This repo contain simple bank transaction blockchain from one user to another.
+This repo contain simple bank transaction blockchain from one user to another of fixed amount
 # Pre-requisite:
 Python 3.5 version +
 
