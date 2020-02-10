@@ -1,0 +1,85 @@
+import datetime as date
+from block import Block
+import random
+from utils import constants,utils
+
+class BlockChain():
+    """
+          Define blockchain
+    """
+    def __init__(self):  # initialize when creating a chain
+        self.blocks = [self.get_genesis_block()]
+
+    """
+        Create genesis block 
+    """
+    def get_genesis_block(self):
+        print("Block #{} has been added to the blockchain!".format(0))
+        return Block(0,
+                     date.datetime.now(),
+                    constants.GENESIS_BLOCK_DATA,
+                    constants.GENESIS_BLOCK_HASH)
+
+    """
+        Add new block 
+    """
+    def add_block(self, data):
+        self.blocks.append(Block(len(self.blocks),
+                                        date.datetime.utcnow(),
+                                        data,
+                                        self.blocks[len(self.blocks) - 1].hash))
+
+        print("Block #{} has been added to the blockchain!".format(len(self.blocks) - 1))
+
+    """
+        Add list of blocks 
+    """
+    def add_list_of_blocks(self,num_of_blocks_to_add):
+        for block in range(0, num_of_blocks_to_add):
+            self.add_block({
+                'sender': utils.generate_string(constants.RANDOM_LENGTH)+ str(block),
+                'recipient': utils.generate_string(constants.RANDOM_LENGTH) + str(block),
+                'amount': random.randrange(constants.MIN_AMT, constants.MAX_AMT)})
+
+    """
+        Get block chain size  
+    """
+    def get_chain_size(self):  # exclude genesis block
+        return len(self.blocks) - 1
+
+    """
+        Get blockchain details  
+    """
+    def get_block_chain(self):
+        return self.blocks
+
+    """
+        Get latest block added  
+    """
+    def get_latest_block(self):
+        return self.blocks[-1]
+
+    """
+        Check blockchain is valid or not  
+    """
+    def check_chain_is_valid(self):
+        flag = True
+        verbose = True
+        for i in range(1, len(self.blocks)):
+            if self.blocks[i].index != i:
+                flag = False
+                if verbose:
+                    print('Wrong block index at block {i}.')
+            if self.blocks[i - 1].hash != self.blocks[i].previous_hash:
+                flag = False
+                if verbose:
+                    print('Wrong previous hash at block {i}.')
+            if self.blocks[i].hash != self.blocks[i].hash_block():
+                flag = False
+                if verbose:
+                    print('Wrong hash at block {i}.')
+            if self.blocks[i - 1].timestamp >= self.blocks[i].timestamp:
+                flag = False
+                if verbose:
+                    print('Backdating at block {i}.')
+        return flag
