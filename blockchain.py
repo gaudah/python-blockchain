@@ -14,6 +14,7 @@ class BlockChain():
         Create genesis block 
     """
     def get_genesis_block(self):
+        print("\t ########################################## ADDING BLOCK TO BLOCKCHAIN    #################################     \n")
         print("Block #{} has been added to the blockchain!".format(0))
         return Block(0,
                      date.datetime.now(),
@@ -28,7 +29,7 @@ class BlockChain():
                                         date.datetime.utcnow(),
                                         data,
                                         self.blocks[len(self.blocks) - 1].hash))
-
+        print("\t ########################################## ADDING BLOCK TO BLOCKCHAIN    #################################     \n")
         print("Block #{} has been added to the blockchain!".format(len(self.blocks) - 1))
 
     """
@@ -69,17 +70,21 @@ class BlockChain():
             if self.blocks[i].index != i:
                 flag = False
                 if verbose:
-                    print('Wrong block index at block {i}.')
+                    print("\t ########################################## ERROR WHILE VALIDATING BLOCKCHAIN   #################################     \n")
+                    print('Wrong block index at block {}.'.format(i))
             if self.blocks[i - 1].hash != self.blocks[i].previous_hash:
                 flag = False
                 if verbose:
-                    print('Wrong previous hash at block {i}.')
+                    print("\t ########################################## ERROR WHILE VALIDATING BLOCKCHAIN   #################################     \n")
+                    print('Wrong previous hash at block {}.'.format(i))
             if self.blocks[i].hash != self.blocks[i].hash_block():
                 flag = False
                 if verbose:
-                    print('Wrong hash at block {i}.')
+                    print("\t ########################################## ERROR WHILE VALIDATING BLOCKCHAIN   #################################     \n")
+                    print('Wrong hash at block {}.'.format(i))
             if self.blocks[i - 1].timestamp >= self.blocks[i].timestamp:
                 flag = False
                 if verbose:
-                    print('Backdating at block {i}.')
+                    print("\t ########################################## ERROR WHILE VALIDATING BLOCKCHAIN   #################################     \n")
+                    print('Backdating at block {}.'.format(i))
         return flag
