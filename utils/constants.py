@@ -7,6 +7,3 @@ CONSONANTS = "".join(set(string.ascii_lowercase) - set(VOWELS))
 RANDOM_LENGTH = 5
 GENESIS_BLOCK_DATA = {'sender':'Aishwarya','recipient':'Sapana','amount':17000}
 GENESIS_BLOCK_HASH = 'arbitrary'
-
-def trial():
-    print("HELLO")
