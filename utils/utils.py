@@ -1,5 +1,4 @@
 import constants
-constants.trial()
 import random
 
 """
