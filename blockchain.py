@@ -7,8 +7,10 @@ class BlockChain():
     """
           Define blockchain
     """
-    def __init__(self):  # initialize when creating a chain
+    def __init__(self, difficulty):  # initialize when creating a chain
         self.blocks = [self.get_genesis_block()]
+        # difficulty of proof of work algorithm
+        self.difficulty = difficulty
 
     """
         Create genesis block 
@@ -19,16 +21,21 @@ class BlockChain():
         return Block(0,
                      date.datetime.now(),
                     constants.GENESIS_BLOCK_DATA,
-                    constants.GENESIS_BLOCK_HASH)
+                    constants.GENESIS_BLOCK_HASH,0)
+
+        print(" SUCC Block #{} has been added to the blockchain!".format(0))
 
     """
         Add new block 
     """
     def add_block(self, data):
-        self.blocks.append(Block(len(self.blocks),
-                                        date.datetime.utcnow(),
-                                        data,
-                                        self.blocks[len(self.blocks) - 1].hash))
+        new_block = Block(len(self.blocks),
+                                 date.datetime.now(),
+                                 data,
+                                 self.blocks[len(self.blocks) - 1].hash,1)
+
+        update_hash_by_difficulty = new_block.mine_block(self.difficulty)
+        self.blocks.append(new_block)
         print("\t ########################################## ADDING BLOCK TO BLOCKCHAIN    #################################     \n")
         print("Block #{} has been added to the blockchain!".format(len(self.blocks) - 1))
 
@@ -85,6 +92,7 @@ class BlockChain():
             if self.blocks[i - 1].timestamp >= self.blocks[i].timestamp:
                 flag = False
                 if verbose:
+                    print(" BOTH TIMESTAMP ARE :",self.blocks[i - 1].timestamp,self.blocks[i].timestamp)
                     print("\t ########################################## ERROR WHILE VALIDATING BLOCKCHAIN   #################################     \n")
                     print('Backdating at block {}.'.format(i))
         return flag

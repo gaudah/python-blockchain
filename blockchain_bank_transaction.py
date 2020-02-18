@@ -5,28 +5,42 @@ import json
 # main for function call.
 if __name__ == "__main__":
     """
-        @param : number of blocks we want to add.
+        @param : number of blocks we want to add and difficulty i.e number of zeros we want as prefix for generating 
+        new hash.
         @description : add list of blocks, validate the block chain and display it.
         @return : block chain info. 
     """
     try:
         print(" Input arguments are :",len(sys.argv))
-        if(len(sys.argv) > 3 or len(sys.argv) < 2):
+
+        if (len(sys.argv) != 3):
             raise Exception('Invalid arguments passed ')
 
-        obj = BlockChain()
         num_of_blocks = int(sys.argv[1])
+        obj = BlockChain(int(sys.argv[2]))
         obj.add_list_of_blocks(num_of_blocks)
         block_chain_length = obj.get_chain_size()
         print("\t ########################################## FINDING BLOCKCHAIN LENGTH    #################################     \n")
         print("Block chain length is : {}".format(block_chain_length))
 
         """
+           Modern computers can create a hash quickly thousands per second. Also we can simply change any hash and
+           quickly recalculate all previous hashes of block and end up with a valid chain.
+           Proof of work -> With this mechanism you have to proof the input a lot of computing power to make a block. 
+           This process is also called as mining.
            Here we need mining because some blocks are getting created immediately at same timestamp.
         """
         is_valid_chain = obj.check_chain_is_valid()
-        print("\t ########################################## CHECK BLOCK IS VALID    #################################     \n")
+        print("\t ########################################## CHECK BLOCK IS VALID 1   #################################     \n")
         print("Block chain is_valid_chain ?  : {}".format(is_valid_chain))
+
+        '''print("\t ########################################## UPDATE DATA OF FIRST BLOCK   #################################     \n")
+
+        obj.get_block_chain()[1].data = "updated"
+        obj.get_block_chain()[1].hash = obj.get_block_chain()[1].hash_block()
+        is_valid_chain = obj.check_chain_is_valid()
+        print("\t ########################################## CHECK BLOCK IS VALID 2   #################################     \n")
+        print("Block chain is_valid_chain ?  : {}".format(is_valid_chain))'''
 
         print("\t ########################################## BLOCK DETAILS ARE    #################################     \n")
         new_dict = {}
@@ -37,6 +51,7 @@ if __name__ == "__main__":
             sub_dict.update(timestamp=str(obj.timestamp))
             sub_dict.update(data=obj.data)
             sub_dict.update(previous_hash=obj.previous_hash)
+            sub_dict.update(nonce=obj.nonce)
             sub_dict.update(hash=obj.hash)
             print("{}".format(json.dumps(sub_dict, sort_keys=True, indent=4)))
             key = "Block {}".format(index)
