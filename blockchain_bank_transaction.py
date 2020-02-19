@@ -18,31 +18,36 @@ if __name__ == "__main__":
 
         num_of_blocks = int(sys.argv[1])
         obj = BlockChain(int(sys.argv[2]))
-        obj.add_list_of_blocks(num_of_blocks)
+
+        """
+            Modern computers can create a hash quickly thousands per second. Also we can simply change any hash and
+            quickly recalculate all previous hashes of block and end up with a valid chain.
+            Proof of work -> With this mechanism you have to proof the input a lot of computing power to make a block. 
+            This process is also called as mining.
+            Here we need mining because some blocks are getting created immediately at same timestamp.
+        """
+
+        is_chain_valid = obj.add_list_of_blocks(num_of_blocks,obj)
+        print("\t ########################################## CHECK CHAIN IS VALID :{}   #################################     \n".format(is_chain_valid))
+        if(is_chain_valid == False):
+            raise Exception("Invalid chain while adding new block..")
         block_chain_length = obj.get_chain_size()
-        print("\t ########################################## FINDING BLOCKCHAIN LENGTH    #################################     \n")
+        print("\t ########################################## FINDING BLOCKCHAIN LENGTH :   #################################     \n")
         print("Block chain length is : {}".format(block_chain_length))
 
-        """
-           Modern computers can create a hash quickly thousands per second. Also we can simply change any hash and
-           quickly recalculate all previous hashes of block and end up with a valid chain.
-           Proof of work -> With this mechanism you have to proof the input a lot of computing power to make a block. 
-           This process is also called as mining.
-           Here we need mining because some blocks are getting created immediately at same timestamp.
-        """
-        is_valid_chain = obj.check_chain_is_valid()
-        print("\t ########################################## CHECK BLOCK IS VALID 1   #################################     \n")
-        print("Block chain is_valid_chain ?  : {}".format(is_valid_chain))
+        '''is_valid_chain = obj.check_chain_is_valid()
+        print("\t ########################################## CHECK BLOCK IS VALID 1 :  #################################     \n")
+        print("Block chain is_valid_chain ?  : {}".format(is_valid_chain))'''
 
-        '''print("\t ########################################## UPDATE DATA OF FIRST BLOCK   #################################     \n")
+        '''print("\t ########################################## UPDATE DATA OF FIRST BLOCK :  #################################     \n")
 
         obj.get_block_chain()[1].data = "updated"
         obj.get_block_chain()[1].hash = obj.get_block_chain()[1].hash_block()
         is_valid_chain = obj.check_chain_is_valid()
-        print("\t ########################################## CHECK BLOCK IS VALID 2   #################################     \n")
+        print("\t ########################################## CHECK BLOCK IS VALID 2 :   #################################     \n")
         print("Block chain is_valid_chain ?  : {}".format(is_valid_chain))'''
 
-        print("\t ########################################## BLOCK DETAILS ARE    #################################     \n")
+        print("\t ########################################## BLOCK DETAILS ARE :   #################################     \n")
         new_dict = {}
         for index,obj in enumerate(obj.get_block_chain()):
             sub_dict = {}
@@ -57,11 +62,11 @@ if __name__ == "__main__":
             key = "Block {}".format(index)
             new_dict[key] = sub_dict
 
-        print("\t ########################################## FINAL BLOCKCHAIN  #################################     \n")
+        print("\t ########################################## FINAL BLOCKCHAIN : #################################     \n")
         print("{}".format(json.dumps(new_dict, sort_keys=True, indent=4)))
 
     except Exception as e:
-        print("\t ########################################## ERROR    #################################     \n")
+        print("\t ########################################## ERROR :   #################################     \n")
         print(" Error is : {} ".format(e))
         print(" Invalid arguments passed: Input should be the number of blocks you want to add ")
         sys.exit(1)
