@@ -1,5 +1,5 @@
-import constants
 import random
+import utils.constants as constants
 
 """
     @params : String length

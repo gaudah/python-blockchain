@@ -1,7 +1,8 @@
 import datetime as date
 from block import Block
 import random
-from utils import constants,utils
+from utils import constants, utils
+
 
 class BlockChain():
     """
